@@ -7,12 +7,12 @@ namespace Lab6_Solution;
 /// <summary>
 /// Authors: Evan Olson, Olivia Ozbaki, Alex Ceithamer
 /// </summary>
-public partial class AddNewAirportPopup : Popup
+public partial class EditAirportPopup : Popup
 {
 	/// <summary>
 	/// Initializes the popup component.
 	/// </summary>
-	public AddNewAirportPopup()
+	public EditAirportPopup()
 	{
 		InitializeComponent();
 	}
@@ -22,7 +22,7 @@ public partial class AddNewAirportPopup : Popup
 	/// </summary>
 	/// <param name="sender">Sender</param>
 	/// <param name="args">Arguments</param>
-	public void AddAirportButtonClicked(System.Object sender, System.EventArgs args)
+	public void EditAirportButtonClicked(System.Object sender, System.EventArgs args)
 	{
 		// Group 1's contributions
 		DateTime dateVisited;

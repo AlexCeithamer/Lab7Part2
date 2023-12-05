@@ -17,11 +17,12 @@ public partial class AirportsPage : ContentPage
 
     // Various event handlers for the buttons on the main page
 
-    void AddAirport_Clicked(System.Object sender, System.EventArgs e)
+    async void AddAirport_Clicked(System.Object sender, System.EventArgs e)
     {
         var popup = new AddNewAirportPopup();
 
-        this.ShowPopup(popup);
+        var result = await this.ShowPopupAsync(popup);
+        await DisplayAlert("Result", result.ToString(), "OK");
     }
 
     void DeleteAirport_Clicked(System.Object sender, System.EventArgs e)

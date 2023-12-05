@@ -50,21 +50,23 @@
             <!--<CollectionView x:Name="CV" ItemsSource="{Binding Airports}" SelectionMode="Single">-->
             <CollectionView x:Name="CV" SelectionMode="Single" ItemsSource="{Binding .}"> 
                 <CollectionView.Header>
-                    <Grid RowDefinitions="*" ColumnDefinitions="50,3.75*,2.5*, 1.75*, *">
+                    <Grid RowDefinitions="*" ColumnDefinitions="50,3*,2.5*, 1.75*, 2*">
                         <Label Grid.Column="0" Text="Id" FontAttributes="Bold" VerticalTextAlignment="Center"/>
                         <Label Grid.Column="1" Text="City" FontAttributes="Bold" VerticalTextAlignment="Center"/>
                         <Label Grid.Column="2" Text="Date Visited" FontAttributes="Bold" VerticalTextAlignment="Center"/>
                         <Label Grid.Column="3" Text="Rating" FontAttributes="Bold" VerticalTextAlignment="Center" />
+                        <Label Grid.Column="4" Text="Actions" FontAttributes="Bold" VerticalTextAlignment="Center" />
                     </Grid>
                 </CollectionView.Header>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="model:Airport">
-                        <Grid RowDefinitions="*" ColumnDefinitions="50,3.75*,2.5*, 1.75*, *">
+                        <Grid RowDefinitions="*" ColumnDefinitions="50,3*,2.5*, 1.75*, *, *">
                             <Label Grid.Column="0" Text="{Binding Id}" VerticalTextAlignment="Center" HorizontalTextAlignment="Start"/>
                             <Label Grid.Column="1" Text="{Binding City}" VerticalTextAlignment="Center" HorizontalTextAlignment="Start"/>
                             <Label Grid.Column="2" Text="{Binding DateVisited}" VerticalTextAlignment="Center" HorizontalTextAlignment="Start"/>
                             <Label Grid.Column="3" Text="{Binding Rating,Converter={StaticResource NumberToStarsConverter}}" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" />
-                            <Button Grid.Column="4" BackgroundColor="Transparent"  Clicked="DeleteAirport_Clicked"  ImageSource="trash.png" />
+                            <Button Grid.Column="4" BackgroundColor="Red"  Clicked="EditAirport_Clicked" Text="E" ImageSource="pencil.png"/>
+                            <Button Grid.Column="5" BackgroundColor="Green"  Clicked="DeleteAirport_Clicked"  ImageSource="trash.png" />
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
