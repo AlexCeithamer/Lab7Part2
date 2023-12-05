@@ -44,7 +44,6 @@
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
-               
             </CollectionView>
 
             <ContentView HeightRequest="500">

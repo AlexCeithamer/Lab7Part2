@@ -26,24 +26,24 @@ public partial class BusinessLogic
          return db.SelectAllWiAirports();
      }
 
-     /// <summary>
-     /// Calculates all possible routes from a starting airport within a given distance
-     /// </summary>
-     /// <param name="id"></param>
-     /// <param name="maxDist"></param>
-     /// <param name="isVisited"></param>
-     /// <returns></returns>
-     public ObservableCollection<Route> CalculateRoutes(String id, int maxDist, bool isVisited)
-     {
+    /// <summary>
+    /// Calculates all possible routes from a starting airport within a given distance
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="maxDist"></param>
+    /// <param name="isVisited"></param>
+    /// <returns></returns>
+    public async Task<ObservableCollection<Route>> CalculateRoutes(string id, int maxDist, bool isVisited)
+    {
          //find the starting airport
          Airport startingAirport = FindWisconsinAirport(id);
          //if the starting airport is null or not in wisconsin, return an empty collection
-         if (startingAirport == null || FindWisconsinAirport(startingAirport.Id) == null)
+         if (startingAirport == null)
          {
              return new ObservableCollection<Route>();
          }
          //fill the distances for all airports
-         ObservableCollection<Airport> airports = FillDistances();
+         ObservableCollection<Airport> airports =  FillDistances();
          //create a collection to keep track of which airports have been visited
          ObservableCollection<Route> routes = new ObservableCollection<Route>() {};
          var initialRoute = new ObservableCollection<Airport>() { startingAirport };

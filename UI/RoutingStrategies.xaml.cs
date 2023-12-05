@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Numerics;
 using Lab6_Starter.Model;
 
 namespace Lab6_Starter;
@@ -32,12 +31,11 @@ public partial class RoutingStrategies : ContentPage, INotifyPropertyChanged
     { 
         InitializeComponent();
         Routes = new ObservableCollection<Route>();
-
         this.BindingContext = this;
     }
 
-    public void CalculateRoute(object sender, EventArgs e)
-    {
+    public async void CalculateRoute(object sender, EventArgs e)
+    {        
         //set the variables from the entries
         String airportId = AirportIdENT.Text;
         int maxDistance;
@@ -48,8 +46,9 @@ public partial class RoutingStrategies : ContentPage, INotifyPropertyChanged
         //check that AirportID and MaxDistance is not null
         if(airportId == null || airportId.Length < 3 || airportId.Length > 4) return;
         if(maxDistance < 0) return;
-        
-        Routes = MauiProgram.BusinessLogic.CalculateRoutes(airportId, maxDistance, isVisited);
+
+        //calculate the routes to be displayed
+        Routes = await MauiProgram.BusinessLogic.CalculateRoutes(airportId, maxDistance, isVisited);
     }
 }
 
