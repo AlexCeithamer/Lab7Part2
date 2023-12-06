@@ -33,7 +33,7 @@ public partial class BusinessLogic
     /// <param name="maxDist"></param>
     /// <param name="isVisited"></param>
     /// <returns></returns>
-    public async Task<ObservableCollection<Route>> CalculateRoutes(string id, int maxDist, bool isVisited)
+    public ObservableCollection<Route> CalculateRoutes(string id, int maxDist, bool isVisited)
     {
          //find the starting airport
          Airport startingAirport = FindWisconsinAirport(id);

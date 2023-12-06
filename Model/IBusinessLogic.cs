@@ -20,7 +20,7 @@ public interface IBusinessLogic
     // RoutingStrategies
     ObservableCollection<Airport> GetWisconsinAirports();
 
-    Task<ObservableCollection<Route>> CalculateRoutes(String id, int maxDist, bool isVisited);
+    ObservableCollection<Route> CalculateRoutes(String id, int maxDist, bool isVisited);
 
     ObservableCollection<Airport> FillDistances();
     double CalculateDistance(Airport start, Airport end);

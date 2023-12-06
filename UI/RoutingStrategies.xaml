@@ -7,64 +7,79 @@
              x:Class="Lab6_Starter.RoutingStrategies"
              xmlns:local="clr-namespace:Lab6_Starter"
              Title="Routing Strategies">
-    <ScrollView>
-        <VerticalStackLayout Spacing="20" Padding= "30,30,30,10" VerticalOptions="Start">
-            <Grid RowDefinitions="*,*,*" ColumnDefinitions="*,*,0.2*">
-                <Label Grid.Row="0" Grid.Column="0" Text="Starting Airport: " VerticalOptions="Center" />
-                <Entry Grid.Row="0" Grid.Column="1" Placeholder="KATW" VerticalOptions="Center" 
-                        x:Name="AirportIdENT" />
+    <!-- Absolute layout needed for loading screen-->
+    <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+        <ScrollView AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1">
 
-                <Label Grid.Row="1" Grid.Column="0" Text="Max Distance: "
-                        VerticalOptions="Center" />
-                <Entry Grid.Row="1" Grid.Column="1" Placeholder="60" VerticalOptions="Center" 
-                        x:Name="MaxDistanceENT" />
+            <VerticalStackLayout Spacing="20" Padding= "30,30,30,10" VerticalOptions="Start" >
+                <Grid RowDefinitions="*,*,*" ColumnDefinitions="*,*,0.2*">
+                    <Label Grid.Row="0" Grid.Column="0" Text="Starting Airport: " VerticalOptions="Center" />
+                    <Entry Grid.Row="0" Grid.Column="1" Placeholder="KATW" VerticalOptions="Center" 
+                            x:Name="AirportIdENT" />
 
-                <Label Grid.Row="1" Grid.Column="2" Text="km" VerticalOptions="Center" />
-                <Label Grid.Row="2" Grid.Column="0" Text="Visited:" 
-                        VerticalOptions="Center" />
-                <Switch Grid.Row="2" Grid.Column="1" x:Name="IsVisitedENT" 
-                        HorizontalOptions="Start"/>
-            </Grid>
-            <Button Text="Find Route" TextColor="White" Clicked="CalculateRoute"/>
-            <!-- Header Grid -->
-            <Grid Padding="20,0" RowDefinitions="*" ColumnDefinitions="2*,2*,1*">
-                <Label Grid.Row="0" Grid.Column="0" Text="Route Number"/>
-                <Label Grid.Row="0" Grid.Column="1" Text="Total Airports" />
-                <Label Grid.Row="0" Grid.Column="2" Text="Total Distance" HorizontalOptions="Center"/>
-            </Grid>
+                    <Label Grid.Row="1" Grid.Column="0" Text="Max Distance: "
+                            VerticalOptions="Center" />
+                    <Entry Grid.Row="1" Grid.Column="1" Placeholder="60" VerticalOptions="Center" 
+                            x:Name="MaxDistanceENT" />
 
-            <CollectionView ItemsSource="{Binding Routes}" Margin="0,-15,0,0" BackgroundColor="AliceBlue" EmptyView="No routes to display" HeightRequest="300">
-                <CollectionView.ItemTemplate>
-                    <!-- CollectionView ItemTemplate Grid -->
-                    <DataTemplate x:DataType="model:Route">
-                        <Grid Padding="20,0" RowDefinitions="Auto" ColumnDefinitions="2*,2*,1*">
-                            <Label Grid.Column="0" Text="{Binding RouteNumber}" VerticalOptions="Center"/>
-                            <Label Grid.Column="1" Text="{Binding TotalAirports}" VerticalOptions="Center" />
-                            <Label Grid.Column="2" Text="{Binding TotalDistance}" VerticalOptions="Center" HorizontalOptions="Center"/>
-                        </Grid>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                    <Label Grid.Row="1" Grid.Column="2" Text="km" VerticalOptions="Center" />
+                    <Label Grid.Row="2" Grid.Column="0" Text="Visited:" 
+                            VerticalOptions="Center" />
+                    <Switch Grid.Row="2" Grid.Column="1" x:Name="IsVisitedENT" 
+                            HorizontalOptions="Start"/>
+                </Grid>
+                <Button Text="Find Route" TextColor="White" Clicked="CalculateRoute"/>
+                <!-- Header Grid -->
+                <Grid Padding="20,0" RowDefinitions="*" ColumnDefinitions="2*,2*,1*">
+                    <Label Grid.Row="0" Grid.Column="0" Text="Route Number"/>
+                    <Label Grid.Row="0" Grid.Column="1" Text="Total Airports" />
+                    <Label Grid.Row="0" Grid.Column="2" Text="Total Distance" HorizontalOptions="Center"/>
+                </Grid>
 
-            <ContentView HeightRequest="500">
+                <CollectionView ItemsSource="{Binding Routes}" Margin="0,-15,0,0" BackgroundColor="AliceBlue" EmptyView="No routes to display" HeightRequest="300">
+                    <CollectionView.ItemTemplate>
+                        <!-- CollectionView ItemTemplate Grid -->
+                        <DataTemplate x:DataType="model:Route">
+                            <Grid Padding="20,0" RowDefinitions="Auto" ColumnDefinitions="2*,2*,1*">
+                                <Label Grid.Column="0" Text="{Binding RouteNumber}" VerticalOptions="Center"/>
+                                <Label Grid.Column="1" Text="{Binding TotalAirports}" VerticalOptions="Center" />
+                                <Label Grid.Column="2" Text="{Binding TotalDistance}" VerticalOptions="Center" HorizontalOptions="Center"/>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
 
-                <maps:Map IsShowingUser="True" x:Name="map">
-                    <x:Arguments>
-                        <MapSpan>
-                            <x:Arguments>
-                                <sensors:Location>
-                                    <x:Arguments>
-                                        <x:Double>44.67718</x:Double>
-                                        <x:Double>-89.62513</x:Double>
-                                    </x:Arguments>
-                                </sensors:Location>
-                                <x:Double>7.0</x:Double>
-                                <x:Double>7.0</x:Double>
-                            </x:Arguments>
-                        </MapSpan>
-                    </x:Arguments>
-                </maps:Map>
-            </ContentView>
-        </VerticalStackLayout>
-    </ScrollView>
+
+                <ContentView HeightRequest="500">
+
+                    <maps:Map IsShowingUser="True" x:Name="map">
+                        <x:Arguments>
+                            <MapSpan>
+                                <x:Arguments>
+                                    <sensors:Location>
+                                        <x:Arguments>
+                                            <x:Double>44.67718</x:Double>
+                                            <x:Double>-89.62513</x:Double>
+                                        </x:Arguments>
+                                    </sensors:Location>
+                                    <x:Double>7.0</x:Double>
+                                    <x:Double>7.0</x:Double>
+                                </x:Arguments>
+                            </MapSpan>
+                        </x:Arguments>
+                    </maps:Map>
+                </ContentView>
+            </VerticalStackLayout>
+        </ScrollView>
+        
+        <!-- ActivityIndicator -->
+        <ActivityIndicator x:Name="loadingIndicator"
+                       IsRunning="False"
+                       IsVisible="False"
+                       Color="Blue"
+                       AbsoluteLayout.LayoutFlags="All"
+                       AbsoluteLayout.LayoutBounds="0,0,1,1"
+                       BackgroundColor="White"
+                       Opacity="0.8"/>
+    </AbsoluteLayout>
 </ContentPage>
