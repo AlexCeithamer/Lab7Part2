@@ -77,11 +77,19 @@ public partial class RoutingStrategies : ContentPage, INotifyPropertyChanged
         return visitedAirports;
     }
 
+    /// <summary>
+    /// Refreshes the map when the visited toggle is toggled
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     public void VisitedToggled(object sender, ToggledEventArgs e)
     {
         ShowAirports();
     }
 
+    /// <summary>
+    /// Displays the airports on the map
+    /// </summary>
     public void ShowAirports()
     {
         map.Pins.Clear();
@@ -105,6 +113,9 @@ public partial class RoutingStrategies : ContentPage, INotifyPropertyChanged
         }
     }
 
+    /// <summary>
+    /// Displays the route airports on the map
+    /// </summary>
     public void ShowRouteAirports()
     {
         map.Pins.Clear();
