@@ -52,7 +52,7 @@ public partial class BusinessLogic : IBusinessLogic, INotifyPropertyChanged
         {
             bool airportVisited = airport.DateVisited != DateTime.MinValue;
             if (airport.Id != startingAirport.Id &&
-                startingAirport.distances[airport.Id] < maxDist &&
+                startingAirport.distances[airport.Id] <= maxDist &&
                 airportVisited == isVisited)
             {
                 airportsInRadius.Add(airport);
@@ -101,13 +101,22 @@ public partial class BusinessLogic : IBusinessLogic, INotifyPropertyChanged
             if (nearestAirport == null)
                 break; // No further airport found within maxDistance
 
+            //update airport lists
             routeAirports.Add(nearestAirport);
             visitedAirports.Add(nearestAirport.Id);
+
+            // Set distance variable the indicates the distance to get to this airport from the previous airport
+            nearestAirport.DistanceFromNextAirport = (int)currentAirport.GetDistance(nearestAirport.Id);
+
             currentAirport = nearestAirport;
         }
 
         // Add the starting airport to complete the loop
-        routeAirports.Add(startingAirport);
+        Airport lastAirport = new Airport(startingAirport.Id, startingAirport.UserId, startingAirport.City, startingAirport.DateVisited, startingAirport.Rating);
+        lastAirport.DistanceFromNextAirport = (int)currentAirport.GetDistance(startingAirport.Id);
+        lastAirport.Latitude = startingAirport.Latitude;
+        lastAirport.Longitude = startingAirport.Longitude;
+        routeAirports.Add(lastAirport);
 
         // return a Route object
         return new Route(routeAirports);
@@ -195,7 +204,7 @@ public partial class BusinessLogic : IBusinessLogic, INotifyPropertyChanged
     /// <param name="startingAirport"></param>
     /// <param name="otherAirport"></param>
     /// <returns></returns>
-    public double CalculateDistance(Airport startingAirport, Airport otherAirport)
+    public int CalculateDistance(Airport startingAirport, Airport otherAirport)
      {
          double lat1 = startingAirport.Latitude;
          double lon1 = startingAirport.Longitude;
@@ -212,7 +221,7 @@ public partial class BusinessLogic : IBusinessLogic, INotifyPropertyChanged
                  Math.Cos(rLat1) * Math.Cos(rLat2) *
                  Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
          var c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
-         return R * c; // Distance in kilometers
+         return (int)Math.Round(R * c); // Distance in kilometers
      }
 
      /// <summary>

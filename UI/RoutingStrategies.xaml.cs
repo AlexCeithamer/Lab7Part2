@@ -158,7 +158,23 @@ public partial class RoutingStrategies : ContentPage, INotifyPropertyChanged
             MainThread.BeginInvokeOnMainThread(() =>
             {
                 //display the route
-                RouteAirports = Route.Airports;
+                if (Route.Airports.Count <= 2)
+                {
+                    NumberAirports.Text = $"Number of Airports: N/A";
+                    RouteDistance.Text = $"Total Distance: N/A";
+                    if (RouteAirports != null)
+                    {
+                        RouteAirports.Clear();
+                    }
+                    Route = null;
+                    MainThread.BeginInvokeOnMainThread(() => DisplayAlert("Error", "No routes found", "OK"));
+                }
+                else
+                {
+                    NumberAirports.Text = $"Number of Airports: {Route.TotalAirports}";
+                    RouteDistance.Text = $"Total Distance: {Route.TotalDistance} km";
+                    RouteAirports = Route.Airports;
+                }
                 loadingIndicator.IsRunning = false;
                 loadingIndicator.IsVisible = false;
 
