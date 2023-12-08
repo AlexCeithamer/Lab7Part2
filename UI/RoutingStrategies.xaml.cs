@@ -13,6 +13,7 @@ public partial class RoutingStrategies : ContentPage, INotifyPropertyChanged
     public int radius { get; set; }
 
     private Route _route;
+
     private ObservableCollection<Airport> _routeAirports;
 
     public Route Route
@@ -104,6 +105,22 @@ public partial class RoutingStrategies : ContentPage, INotifyPropertyChanged
         }
     }
 
+    public void ShowRouteAirports()
+    {
+        map.Pins.Clear();
+        foreach (Airport airport in RouteAirports)
+        {
+            Pin airportPin = new Pin()
+            {
+                Location = new Location(airport.Latitude, airport.Longitude),
+                Label = airport.Id,
+                Address = airport.City,
+                Type = PinType.Place
+            };
+            map.Pins.Add(airportPin);
+        }
+    }
+
 
     public async void CalculateRoute(object sender, EventArgs e)
     {
@@ -144,6 +161,24 @@ public partial class RoutingStrategies : ContentPage, INotifyPropertyChanged
                 RouteAirports = Route.Airports;
                 loadingIndicator.IsRunning = false;
                 loadingIndicator.IsVisible = false;
+
+                ShowRouteAirports();
+
+                for (int i = 0; i < RouteAirports.Count - 1; i++)
+                {
+                    var polyline = new Polyline
+                    {
+                        StrokeColor = Colors.Red,
+                        StrokeWidth = 12,
+                        Geopath =
+                        {
+                            new Location(RouteAirports[i].Latitude, RouteAirports[i].Longitude),
+                            new Location(RouteAirports[i + 1].Latitude, RouteAirports[i + 1].Longitude)
+                        }
+                    };
+                    map.MapElements.Add(polyline);
+                }
+
             });
         });
 
