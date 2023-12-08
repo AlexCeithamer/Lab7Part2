@@ -42,13 +42,7 @@ public partial class RoutingStrategies : ContentPage, INotifyPropertyChanged
         }
     }
 
-    override
-    protected void OnAppearing()
-    {
-        ShowAirports();
-    }
-
-
+   
     public new event PropertyChangedEventHandler PropertyChanged;
 
     protected new virtual void OnPropertyChanged(string propertyName)
@@ -60,6 +54,7 @@ public partial class RoutingStrategies : ContentPage, INotifyPropertyChanged
     { 
         InitializeComponent();
         Route = new Route();
+        ShowAirports();
 
         this.BindingContext = this;
     }
@@ -79,27 +74,12 @@ public partial class RoutingStrategies : ContentPage, INotifyPropertyChanged
     }
 
     /// <summary>
-    /// Refreshes the map when the visited toggle is toggled
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    public void VisitedToggled(object sender, ToggledEventArgs e)
-    {
-        ShowAirports();
-    }
-
-    /// <summary>
     /// Displays the airports on the map
     /// </summary>
     public void ShowAirports()
     {
         map.Pins.Clear();
-        bool isVisited = IsVisitedENT.IsToggled;
         var airports = MauiProgram.BusinessLogic.GetWisconsinAirports();
-        if (isVisited)
-        {
-            airports = VisitedAirports(MauiProgram.BusinessLogic.GetAirports());
-        }
 
         foreach (Airport airport in airports)
         {
