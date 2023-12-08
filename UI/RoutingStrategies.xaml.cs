@@ -172,6 +172,8 @@ public partial class RoutingStrategies : ContentPage, INotifyPropertyChanged
 
                 ShowRouteAirports();
                 map.MapElements.Clear();
+                
+                //Adds Lines Between Each Pin In Routes Path
                 for (int i = 0; i < RouteAirports.Count - 1; i++)
                 {
                     var polyline = new Polyline
