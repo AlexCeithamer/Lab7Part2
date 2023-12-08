@@ -17,7 +17,7 @@
                     <Entry Grid.Row="0" Grid.Column="1" Placeholder="KATW" VerticalOptions="Center" 
                             x:Name="AirportIdENT"/>
 
-                    <Label Grid.Row="1" Grid.Column="0" Text="Max Distance: "
+                    <Label Grid.Row="1" Grid.Column="0" Text="Radius: "
                             VerticalOptions="Center" />
                     <Entry Grid.Row="1" Grid.Column="1" Placeholder="60" VerticalOptions="Center" 
                             x:Name="MaxDistanceENT"/>
@@ -31,24 +31,24 @@
                 <Button Text="Find Route" TextColor="White" Clicked="CalculateRoute"/>
                 <!-- Route info -->
                 <Grid Padding="20,0" RowDefinitions="*,*" ColumnDefinitions="*">
-                    <Label Grid.Row="0" Grid.Column="0" Text="Total Airports" HorizontalOptions="Center"/>
-                    <Label Grid.Row="1" Grid.Column="0" Text="Total Distance" HorizontalOptions="Center"/>
+                    <Label Grid.Row="0" Grid.Column="0" x:Name="NumberAirports" Text="Total Airports: N/A" HorizontalOptions="Center"/>
+                    <Label Grid.Row="1" Grid.Column="0" x:Name="RouteDistance" Text="Total Distance: N/A" HorizontalOptions="Center"/>
                 </Grid>
                 <!-- Header Grid -->
-                <Grid Padding="20,0" RowDefinitions="*" ColumnDefinitions="2*,2*,1*">
+                <Grid Padding="20,0" RowDefinitions="*" ColumnDefinitions="4*,2*,1.5*">
                     <Label Grid.Row="0" Grid.Column="0" Text="City"/>
                     <Label Grid.Row="0" Grid.Column="1" Text="Airport ID" />
-                    <Label Grid.Row="0" Grid.Column="2" Text="Rating" HorizontalOptions="Center"/>
+                    <Label Grid.Row="0" Grid.Column="2" Text="Distance" HorizontalOptions="EndAndExpand"/>
                 </Grid>
 
                 <CollectionView ItemsSource="{Binding RouteAirports}" Margin="0,-15,0,0" BackgroundColor="AliceBlue" EmptyView="No route to display" HeightRequest="300">
                     <CollectionView.ItemTemplate>
                         <!-- CollectionView ItemTemplate Grid -->
                         <DataTemplate x:DataType="model:Airport">
-                            <Grid Padding="20,0" RowDefinitions="Auto" ColumnDefinitions="2*,2*,1*">
+                            <Grid Padding="20,0" RowDefinitions="Auto" ColumnDefinitions="4*,2*,1*">
                                 <Label Grid.Column="0" Text="{Binding City}" VerticalOptions="Center"/>
                                 <Label Grid.Column="1" Text="{Binding Id}" VerticalOptions="Center" />
-                                <Label Grid.Column="2" Text="{Binding Rating}" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                <Label Grid.Column="2" Text="{Binding DistanceFromNextAirport}" VerticalOptions="Center" HorizontalOptions="Center"/>
                             </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>

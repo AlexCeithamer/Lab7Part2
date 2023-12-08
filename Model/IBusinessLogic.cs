@@ -23,7 +23,7 @@ public interface IBusinessLogic
     Route CalculateRoute(String id, int maxDist, bool isVisited);
 
     public ObservableCollection<Airport> FillDistances(ObservableCollection<Airport> airports, Airport startingAirport, int maxDistance, bool onlyStartingAirport);
-    double CalculateDistance(Airport start, Airport end);
+    int CalculateDistance(Airport start, Airport end);
 
     public Airport FindWisconsinAirport(String id);
 
