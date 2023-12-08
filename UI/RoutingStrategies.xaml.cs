@@ -178,6 +178,18 @@ public partial class RoutingStrategies : ContentPage, INotifyPropertyChanged
                     };
                     map.MapElements.Add(polyline);
                 }
+                var polyline2 = new Polyline
+                {
+                    StrokeColor = Colors.Red,
+                    StrokeWidth = 12,
+                    Geopath =
+                        {
+                            new Location(RouteAirports[RouteAirports.Count - 1].Latitude, RouteAirports[RouteAirports.Count - 1].Longitude),
+                            new Location(RouteAirports[0].Latitude, RouteAirports[0].Longitude)
+                        }
+                };
+                map.MapElements.Add(polyline2);
+
 
             });
         });
