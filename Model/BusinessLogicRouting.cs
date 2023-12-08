@@ -1,19 +1,20 @@
 ﻿namespace Lab6_Starter.Model;
 
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using Lab6_Starter.Model;
 
-public partial class BusinessLogic
+public partial class BusinessLogic : IBusinessLogic, INotifyPropertyChanged
 {
 
-        public Airport FindWisconsinAirport(String id)
+     public Airport FindWisconsinAirport(String id)
      {
-         if (db.SelectWisconsinAirport(id) == null)
-         {
-             return null;
-         }
-         return db.SelectWisconsinAirport(id);
-     }
+        if (db.SelectWisconsinAirport(id) == null)
+        {
+            return null;
+        }
+            return db.SelectWisconsinAirport(id);
+     }  
      
 
      public ObservableCollection<Airport> WisconsinAirports

@@ -1,12 +1,18 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Reflection.Metadata.Ecma335;
+using Android.Service.Voice;
 using Lab6_Starter.Model;
+using Microsoft.Maui.Controls.Maps;
+using Microsoft.Maui.Maps;
 
 namespace Lab6_Starter;
 
 public partial class RoutingStrategies : ContentPage, INotifyPropertyChanged
 {   
     public bool IsVisited { get; set; }
+    public int radius { get; set; }
+
     private ObservableCollection<Route> _routes;
 
     public ObservableCollection<Route> Routes
@@ -20,6 +26,54 @@ public partial class RoutingStrategies : ContentPage, INotifyPropertyChanged
                 OnPropertyChanged(nameof(Routes));
             }
         }
+    }
+
+    override
+    protected void OnAppearing()
+    {
+        ShowAirports();
+    }
+
+    public ObservableCollection<Airport> VisitedAirports(ObservableCollection<Airport> airports)
+    {
+        ObservableCollection<Airport> visitedAirports = new ObservableCollection<Airport>();
+        foreach(Airport airport in airports)
+        {
+            if(MauiProgram.BusinessLogic.FindWisconsinAirport(airport.Id) != null)
+            {
+                visitedAirports.Add(MauiProgram.BusinessLogic.FindWisconsinAirport(airport.Id));
+            }
+        }
+
+        return visitedAirports;
+    }
+
+    public void ShowAirports()
+    {
+        map.Pins.Clear();
+        bool isVisited = IsVisitedENT.IsToggled;
+        var airports = MauiProgram.BusinessLogic.GetWisconsinAirports();
+        if (isVisited)
+        {
+            airports = VisitedAirports(MauiProgram.BusinessLogic.GetAirports());
+        }
+
+        foreach(Airport airport in airports)
+        {
+            Pin airportPin = new Pin()
+            {
+                Location = new Location(airport.Latitude, airport.Longitude),
+                Label = airport.Id,
+                Address = airport.City,
+                Type = PinType.Place
+            };
+            map.Pins.Add(airportPin);
+        }
+    }
+
+    public void VisitedToggled(object sender, ToggledEventArgs e)
+    {
+        ShowAirports();
     }
 
     public new event PropertyChangedEventHandler PropertyChanged;

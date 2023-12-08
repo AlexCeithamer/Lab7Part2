@@ -24,4 +24,8 @@ public interface IBusinessLogic
 
     ObservableCollection<Airport> FillDistances();
     double CalculateDistance(Airport start, Airport end);
+
+    public Airport FindWisconsinAirport(String id);
+
+
 }

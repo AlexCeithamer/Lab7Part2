@@ -15,18 +15,18 @@
                 <Grid RowDefinitions="*,*,*" ColumnDefinitions="*,*,0.2*">
                     <Label Grid.Row="0" Grid.Column="0" Text="Starting Airport: " VerticalOptions="Center" />
                     <Entry Grid.Row="0" Grid.Column="1" Placeholder="KATW" VerticalOptions="Center" 
-                            x:Name="AirportIdENT" />
+                            x:Name="AirportIdENT"/>
 
                     <Label Grid.Row="1" Grid.Column="0" Text="Max Distance: "
                             VerticalOptions="Center" />
                     <Entry Grid.Row="1" Grid.Column="1" Placeholder="60" VerticalOptions="Center" 
-                            x:Name="MaxDistanceENT" />
+                            x:Name="MaxDistanceENT"/>
 
                     <Label Grid.Row="1" Grid.Column="2" Text="km" VerticalOptions="Center" />
                     <Label Grid.Row="2" Grid.Column="0" Text="Visited:" 
                             VerticalOptions="Center" />
                     <Switch Grid.Row="2" Grid.Column="1" x:Name="IsVisitedENT" 
-                            HorizontalOptions="Start"/>
+                            HorizontalOptions="Start" Toggled="VisitedToggled"/>
                 </Grid>
                 <Button Text="Find Route" TextColor="White" Clicked="CalculateRoute"/>
                 <!-- Header Grid -->
