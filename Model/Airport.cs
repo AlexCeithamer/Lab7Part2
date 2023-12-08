@@ -20,7 +20,7 @@ public class Airport : INotifyPropertyChanged
     int distanceToNextAirport;
 
     //Each Airport has a dictionary of every other Airport(Id) and the distance from itself to that airport
-     public Dictionary<string, int> distances = new();
+    public Dictionary<string, int> distances = new();
 
     public String Id
     {

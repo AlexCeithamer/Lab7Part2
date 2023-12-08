@@ -99,7 +99,9 @@ public partial class BusinessLogic : IBusinessLogic, INotifyPropertyChanged
             Airport nearestAirport = FindNearestAirport(currentAirport, airports, visitedAirports);
 
             if (nearestAirport == null)
+            { 
                 break; // No further airport found within maxDistance
+            }
 
             //update airport lists
             routeAirports.Add(nearestAirport);
