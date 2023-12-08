@@ -1,3 +1,7 @@
+using Lab6_Starter.Model;
+using Microsoft.Maui.Controls.Maps;
+using Microsoft.Maui.Maps;
+
 namespace Lab6_Starter;
 public partial class Map : ContentPage
 {

@@ -9,9 +9,10 @@
 
     <ContentPage.ToolbarItems>
         <ToolbarItem IconImageSource="logout.png" Text="Logout" Clicked="Logout_Clicked"/>
+        <ToolbarItem IconImageSource="plus.png"  Text="Add" Clicked="DisplayLine"/>
     </ContentPage.ToolbarItems>
 
-    <maps:Map>
+    <maps:Map x:Name="map">
         <x:Arguments>
             <MapSpan>
                 <x:Arguments>
