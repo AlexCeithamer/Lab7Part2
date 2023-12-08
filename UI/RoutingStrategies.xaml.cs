@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Reflection.Metadata.Ecma335;
 using Lab6_Starter.Model;
 using Microsoft.Maui.Controls.Maps;
+using Microsoft.Maui.Devices.Sensors;
 using Microsoft.Maui.Maps;
 
 namespace Lab6_Starter;
@@ -205,7 +206,9 @@ public partial class RoutingStrategies : ContentPage, INotifyPropertyChanged
                         }
                 };
                 map.MapElements.Add(polyline2);
-
+                Location location = new Location(RouteAirports[0].Latitude, RouteAirports[0].Longitude);
+                MapSpan mapSpan = MapSpan.FromCenterAndRadius(location, Distance.FromKilometers(0.444));
+                map.MoveToRegion(mapSpan);
 
             });
         });
