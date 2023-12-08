@@ -179,7 +179,7 @@ public partial class RoutingStrategies : ContentPage, INotifyPropertyChanged
                 loadingIndicator.IsVisible = false;
 
                 ShowRouteAirports();
-
+                map.MapElements.Clear();
                 for (int i = 0; i < RouteAirports.Count - 1; i++)
                 {
                     var polyline = new Polyline
