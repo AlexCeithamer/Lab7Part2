@@ -6,26 +6,23 @@ using Lab6_Starter.Model;
 
 public partial class BusinessLogic : IBusinessLogic, INotifyPropertyChanged
 {
+    public ObservableCollection<Airport> WisconsinAirports
+    {
+        get { return GetWisconsinAirports(); }
+    }
 
-     public Airport FindWisconsinAirport(String id)
-     {
+    public ObservableCollection<Airport> GetWisconsinAirports()
+    {
+        return db.SelectAllWiAirports();
+    }
+    public Airport FindWisconsinAirport(String id)
+    {
         if (db.SelectWisconsinAirport(id) == null)
         {
             return null;
         }
-            return db.SelectWisconsinAirport(id);
-     }  
-     
-
-     public ObservableCollection<Airport> WisconsinAirports
-     {
-         get { return GetWisconsinAirports(); }
-     }
-
-        public ObservableCollection<Airport> GetWisconsinAirports()
-     {
-         return db.SelectAllWiAirports();
-     }
+        return db.SelectWisconsinAirport(id);
+    }
 
     /// <summary>
     /// Calculates all possible routes from a starting airport within a given distance
@@ -34,91 +31,171 @@ public partial class BusinessLogic : IBusinessLogic, INotifyPropertyChanged
     /// <param name="maxDist"></param>
     /// <param name="isVisited"></param>
     /// <returns></returns>
-    public ObservableCollection<Route> CalculateRoutes(string id, int maxDist, bool isVisited)
+    public Route CalculateRoute(string id, int maxDist, bool isVisited)
     {
-         //find the starting airport
-         Airport startingAirport = FindWisconsinAirport(id);
-         //if the starting airport is null or not in wisconsin, return an empty collection
-         if (startingAirport == null)
-         {
-             return new ObservableCollection<Route>();
-         }
-         //fill the distances for all airports
-         ObservableCollection<Airport> airports =  FillDistances();
-         //create a collection to keep track of which airports have been visited
-         ObservableCollection<Route> routes = new ObservableCollection<Route>() {};
-         var initialRoute = new ObservableCollection<Airport>() { startingAirport };
-         ExploreRoutes(startingAirport, airports, initialRoute, 0, maxDist, isVisited, routes);
+        //find the starting airport
+        Airport startingAirport = FindWisconsinAirport(id);
 
-         return routes;
-     }
+        //if the starting airport is null or not in wisconsin, return an empty collection
+        if (startingAirport == null)
+        {
+            return new Route();
+        }
 
-     /// <summary>
-     /// Private helper method for CalculateRoutes() to recursively explore all possible routes
-     /// </summary>
-     /// <param name="currentAirport"></param>
-     /// <param name="allAirports"></param>
-     /// <param name="currentRoute"></param>
-     /// <param name="currentDistance"></param>
-     /// <param name="maxDist"></param>
-     /// <param name="isVisited"></param>
-     /// <param name="routes"></param>
-     private void ExploreRoutes(Airport currentAirport, ObservableCollection<Airport> allAirports, ObservableCollection<Airport> currentRoute, double currentDistance, int maxDist, bool isVisited, ObservableCollection<Route> routes)
+        //get list of all airports and get the distance from the starting airport to each airport
+        ObservableCollection<Airport> airports = db.SelectAllWiAirports();
+        airports =  FillDistances(airports, startingAirport, maxDist, true);
+
+        //get a list of the airports in the radius and that match the isVisited parameter
+        ObservableCollection<Airport> airportsInRadius = new ObservableCollection<Airport>() { startingAirport };
+        foreach (Airport airport in airports)
+        {
+            bool airportVisited = airport.DateVisited != DateTime.MinValue;
+            if (airport.Id != startingAirport.Id &&
+                startingAirport.distances[airport.Id] < maxDist &&
+                airportVisited == isVisited)
+            {
+                airportsInRadius.Add(airport);
+            }
+        }
+
+        //calculate all distances for each airport now that we have a list of airports to consider
+        foreach (Airport airport in airportsInRadius)
+        {
+            airportsInRadius = FillDistances(airportsInRadius, airport, maxDist, false);
+        }
+
+        // Call ExploreRoutes to find the shortest path
+        return ExploreRoutes(startingAirport, airportsInRadius, maxDist);
+    }
+
+    /// <summary>
+    /// Iterates over the airports, using the FindNearestAirports helper method to find the closest unvisited
+    /// airport. Once all airports have been visited, the method closes by returning to the original airport
+    /// and returns the route.
+    /// 
+    /// uses the Nearest Neighbor algorithm
+    /// </summary>
+    /// <param name="startingAirport"></param>
+    /// <param name="airports"></param>
+    /// <param name="maxDistance"></param>
+    /// <returns></returns>
+    private Route ExploreRoutes(Airport startingAirport, ObservableCollection<Airport> airports, int maxDistance)
+    {
+        // A temporary variable to store the current airport
+        Airport currentAirport = startingAirport;
+
+        // We use a HashSet to keep track of visited airports
+        HashSet<string> visitedAirports = new HashSet<string>();
+
+        // Start constructing the route
+        ObservableCollection<Airport> routeAirports = new ObservableCollection<Airport>();
+        routeAirports.Add(currentAirport);
+
+        visitedAirports.Add(currentAirport.Id);
+
+        while (visitedAirports.Count < airports.Count)
+        {
+            Airport nearestAirport = FindNearestAirport(currentAirport, airports, visitedAirports);
+
+            if (nearestAirport == null)
+                break; // No further airport found within maxDistance
+
+            routeAirports.Add(nearestAirport);
+            visitedAirports.Add(nearestAirport.Id);
+            currentAirport = nearestAirport;
+        }
+
+        // Add the starting airport to complete the loop
+        routeAirports.Add(startingAirport);
+
+        // return a Route object
+        return new Route(routeAirports);
+    }
+
+    /// <summary>
+    /// Private helper method for ExploreRoutes. Finds the nearest airport to the current airport
+    /// </summary>
+    /// <param name="currentAirport"></param>
+    /// <param name="airports"></param>
+    /// <param name="visitedAirports"></param>
+    /// <returns></returns>
+    private Airport FindNearestAirport(Airport currentAirport, ObservableCollection<Airport> airports, HashSet<string> visitedAirports)
+    {
+        Airport nearest = null;
+        double minDistance = double.MaxValue;
+
+        foreach (Airport airport in airports)
+        {
+            if (!visitedAirports.Contains(airport.Id))
+            {
+                double distance = currentAirport.GetDistance(airport.Id);
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    nearest = airport;
+                }
+            }
+        }
+
+        return nearest;
+    }
+
+
+
+    /// <summary>
+    /// Fills the distance property for all airports or just the starting airport
+    /// </summary>
+    /// <param name="airports"></param>
+    /// <param name="startingAirport"></param>
+    /// <param name="maxDistance"></param>
+    /// <param name="onlyStartingAirport"></param>
+    /// <returns></returns>
+    public ObservableCollection<Airport> FillDistances(ObservableCollection<Airport> airports, Airport startingAirport, int maxDistance, bool onlyStartingAirport)
      {
-         foreach (var airport in allAirports)
-         {
-             //if the airport is already in the route, skip it. If the airport is not visited and we are only looking for visited airports, skip it.
-             bool airportVisited = airport.DateVisited != DateTime.MinValue;
-             if (currentRoute.Contains(airport) || isVisited != airportVisited) { continue; }
-
-             //if the airport is within the max distance, add it to the route and explore from there
-             double distanceToAdd = currentAirport.GetDistance(airport.Id);
-             if (currentDistance + distanceToAdd <= maxDist)
-             {
-                 var newRoute = new ObservableCollection<Airport>(currentRoute) { airport };
-                 double newDistance = currentDistance + distanceToAdd;
-                 //if the route is less than the max distance, add it to the routes collection. Otherwise, explore from the new airport
-                 if (newDistance <= maxDist && newDistance > 0)
-                 {
-                     routes.Add(new Route(newRoute, routes.Count + 1));
-                 }
-                 else
-                 {
-                     ExploreRoutes(airport, allAirports, newRoute, newDistance, maxDist, isVisited, routes);
-
-                 }
-             }
-         }
+        //run this if we only want to fill the distances for the starting airport
+        if (onlyStartingAirport)
+        {
+            //Fill distance to each airport from our starting airport
+            foreach (Airport airport in airports)
+            {
+                if (airport.Id != startingAirport.Id)
+                {
+                    startingAirport.distances.Add(airport.Id, CalculateDistance(startingAirport, airport));
+                }
+            }
+        }
+        //run this if we want to fill the distances for every airport (should only be passing in airports in the radius)
+        else
+        {
+            foreach (Airport airport in airports)
+            {
+                //clear the distances dictionary so we don't have any old data
+                if (airport.distances != null || airport.distances.Count > 0)
+                {
+                    airport.distances.Clear();
+                }
+                //calculate distance to other airports
+                foreach (Airport otherAirport in airports)
+                {
+                    //make sure we don't calculate distance from an airport to itself
+                    if (airport.Id != otherAirport.Id)
+                    {
+                        airport.distances.Add(otherAirport.Id, CalculateDistance(airport, otherAirport));
+                    }
+                }
+            }
+        }
+        return airports;
      }
 
-     /// <summary>
-     /// Fills the distance property for all airports
-     /// </summary>
-     public ObservableCollection<Airport> FillDistances()
-     {
-         ObservableCollection<Airport> airports = db.SelectAllWiAirports();
-         //for each of this airport, calculate the distance to every other airport
-         foreach(Airport airport in airports)
-         {
-             foreach(Airport otherAirport in airports)
-             {
-                 //make sure we don't calculate distance from an airport to itself
-                 if (airport.Id != otherAirport.Id)
-                 {
-                     airport.distances.Add(otherAirport.Id, CalculateDistance(airport, otherAirport));
-                 }
-             }
-         }
-         return airports;
-     }
-
-     /// <summary>
-     /// Uses the Haversine formula to calculate the distance between two airports
-     /// </summary>
-     /// <param name="startingAirport"></param>
-     /// <param name="otherAirport"></param>
-     /// <returns></returns>
-     public double CalculateDistance(Airport startingAirport, Airport otherAirport)
+    /// <summary>
+    /// Uses the Haversine formula to calculate the distance between two airports
+    /// </summary>
+    /// <param name="startingAirport"></param>
+    /// <param name="otherAirport"></param>
+    /// <returns></returns>
+    public double CalculateDistance(Airport startingAirport, Airport otherAirport)
      {
          double lat1 = startingAirport.Latitude;
          double lon1 = startingAirport.Longitude;

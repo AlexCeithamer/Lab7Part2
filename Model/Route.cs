@@ -10,6 +10,7 @@ namespace Lab6_Starter.Model;
 public class Route : INotifyPropertyChanged
 {
     public ObservableCollection<Airport> Airports { get; set; }
+    //route number is the number of the route if used in a list of routes (unique identifier)
     public string RouteNumber { get; set; }
     public int TotalAirports { get; set; }
     public int TotalDistance { 
@@ -20,13 +21,36 @@ public class Route : INotifyPropertyChanged
         set { }
     }
 
-    // Constructor to initialize from a collection of Airports
+    /// <summary>
+    /// Constructor with route identifier
+    /// </summary>
+    /// <param name="airports"></param>
+    /// <param name="routeNumber"></param>
     public Route(ObservableCollection<Airport> airports, int routeNumber)
     {
         Airports = airports;
         RouteNumber = $"Route {routeNumber}";
         TotalAirports = airports.Count;
         TotalDistance = CalculateTotalDistance();
+    }
+
+    /// <summary>
+    /// Constructor without route identifier
+    /// </summary>
+    /// <param name="airports"></param>
+    public Route(ObservableCollection<Airport> airports)
+    {
+        Airports = airports;
+        TotalAirports = airports.Count;
+        TotalDistance = CalculateTotalDistance();
+    }
+
+    /// <summary>
+    /// Default constructor
+    /// </summary>
+    public Route()
+    {
+        Airports = new ObservableCollection<Airport>();
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -36,6 +60,10 @@ public class Route : INotifyPropertyChanged
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
+    /// <summary>
+    /// Calculates the total distance of the route
+    /// </summary>
+    /// <returns></returns>
     private int CalculateTotalDistance()
     {
         double totalDistance = 0;

@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Reflection.Metadata.Ecma335;
-using Android.Service.Voice;
 using Lab6_Starter.Model;
 using Microsoft.Maui.Controls.Maps;
 using Microsoft.Maui.Maps;
@@ -13,17 +12,30 @@ public partial class RoutingStrategies : ContentPage, INotifyPropertyChanged
     public bool IsVisited { get; set; }
     public int radius { get; set; }
 
-    private ObservableCollection<Route> _routes;
+    private Route _route;
+    private ObservableCollection<Airport> _routeAirports;
 
-    public ObservableCollection<Route> Routes
+    public Route Route
     {
-        get => _routes;
+        get => _route;
         set
         {
-            if (_routes != value)
+            if (_route != value)
             {
-                _routes = value;
-                OnPropertyChanged(nameof(Routes));
+                _route = value;
+                OnPropertyChanged(nameof(Route));
+            }
+        }
+    }
+    public ObservableCollection<Airport> RouteAirports
+    {
+        get => _routeAirports;
+        set
+        {
+            if (_routeAirports != value)
+            {
+                _routeAirports = value;
+                OnPropertyChanged(nameof(RouteAirports));
             }
         }
     }
@@ -34,18 +46,39 @@ public partial class RoutingStrategies : ContentPage, INotifyPropertyChanged
         ShowAirports();
     }
 
+
+    public new event PropertyChangedEventHandler PropertyChanged;
+
+    protected new virtual void OnPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    public RoutingStrategies()
+    { 
+        InitializeComponent();
+        Route = new Route();
+
+        this.BindingContext = this;
+    }
+
     public ObservableCollection<Airport> VisitedAirports(ObservableCollection<Airport> airports)
     {
         ObservableCollection<Airport> visitedAirports = new ObservableCollection<Airport>();
-        foreach(Airport airport in airports)
+        foreach (Airport airport in airports)
         {
-            if(MauiProgram.BusinessLogic.FindWisconsinAirport(airport.Id) != null)
+            if (MauiProgram.BusinessLogic.FindWisconsinAirport(airport.Id) != null)
             {
                 visitedAirports.Add(MauiProgram.BusinessLogic.FindWisconsinAirport(airport.Id));
             }
         }
 
         return visitedAirports;
+    }
+
+    public void VisitedToggled(object sender, ToggledEventArgs e)
+    {
+        ShowAirports();
     }
 
     public void ShowAirports()
@@ -58,7 +91,7 @@ public partial class RoutingStrategies : ContentPage, INotifyPropertyChanged
             airports = VisitedAirports(MauiProgram.BusinessLogic.GetAirports());
         }
 
-        foreach(Airport airport in airports)
+        foreach (Airport airport in airports)
         {
             Pin airportPin = new Pin()
             {
@@ -71,26 +104,7 @@ public partial class RoutingStrategies : ContentPage, INotifyPropertyChanged
         }
     }
 
-    public void VisitedToggled(object sender, ToggledEventArgs e)
-    {
-        ShowAirports();
-    }
 
-    public new event PropertyChangedEventHandler PropertyChanged;
-
-    protected new virtual void OnPropertyChanged(string propertyName)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-    public RoutingStrategies()
-    { 
-        InitializeComponent();
-        Routes = new ObservableCollection<Route>();
-
-        this.BindingContext = this;
-    }
-
-    
     public async void CalculateRoute(object sender, EventArgs e)
     {
         loadingIndicator.IsRunning = true;
@@ -110,14 +124,24 @@ public partial class RoutingStrategies : ContentPage, INotifyPropertyChanged
             bool isVisited = IsVisitedENT.IsToggled;
 
             //check that AirportID and MaxDistance is not null
-            if (airportId == null || airportId.Length < 3 || airportId.Length > 4) return;
-            if (maxDistance < 0) return;
+            if (airportId == null || airportId.Length < 3 || airportId.Length > 4)
+            {
+                MainThread.BeginInvokeOnMainThread(() => DisplayAlert("Error", "Please enter a valid airport ID", "OK"));
+                return;
+            }
+            if (maxDistance < 0)
+            {
+                MainThread.BeginInvokeOnMainThread(() => DisplayAlert("Error", "Please enter a valid distance", "OK"));
+                return;
+            }
 
             //calculate the routes to be displayed
-            Routes = MauiProgram.BusinessLogic.CalculateRoutes(airportId, maxDistance, isVisited);
+            Route = MauiProgram.BusinessLogic.CalculateRoute(airportId, maxDistance, isVisited);
 
             MainThread.BeginInvokeOnMainThread(() =>
             {
+                //display the route
+                RouteAirports = Route.Airports;
                 loadingIndicator.IsRunning = false;
                 loadingIndicator.IsVisible = false;
             });
