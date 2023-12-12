@@ -275,8 +275,8 @@ public partial class Database : IDatabase
 
             id = reader.GetString(0);
             String city = reader.GetString(1);
-            float lat = reader.GetFloat(2);
-            float long_ = reader.GetFloat(3);
+            double lat = reader.GetDouble(2);
+            double long_ = reader.GetDouble(3);
             airportToAdd = new(id, null, city, DateTime.Now, 5);
             airportToAdd.Latitude = lat;
             airportToAdd.Longitude = long_;

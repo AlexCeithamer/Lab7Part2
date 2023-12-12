@@ -17,9 +17,10 @@ public class Airport : INotifyPropertyChanged
     int rating;
     Double latitude;
     Double longitude;
+    int distanceToNextAirport;
 
     //Each Airport has a dictionary of every other Airport(Id) and the distance from itself to that airport
-     public Dictionary<string, double> distances = new();
+    public Dictionary<string, int> distances = new();
 
     public String Id
     {
@@ -79,6 +80,11 @@ public class Airport : INotifyPropertyChanged
         get { return longitude; }
         set { longitude = value; }
     }
+    public int DistanceFromNextAirport
+    {
+        get { return distanceToNextAirport; }
+        set { distanceToNextAirport = value; }
+    }
 
     public Airport(String id, String userId, String city, DateTime dateVisited, int rating)
     {
@@ -93,6 +99,7 @@ public class Airport : INotifyPropertyChanged
     {
         Latitude = latitude;
         Longitude = longitude;
+        DistanceFromNextAirport = 0;
     }
 
     public Airport() { }

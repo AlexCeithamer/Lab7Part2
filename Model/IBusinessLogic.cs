@@ -23,10 +23,15 @@ public interface IBusinessLogic
     // RoutingStrategies
     ObservableCollection<Airport> GetWisconsinAirports();
 
-    ObservableCollection<Route> CalculateRoutes(String id, int maxDist, bool isVisited);
+    Route CalculateRoute(String id, int maxDist, bool isVisited);
 
+    public ObservableCollection<Airport> FillDistances(ObservableCollection<Airport> airports, Airport startingAirport, int maxDistance, bool onlyStartingAirport);
+    int CalculateDistance(Airport start, Airport end);
+
+    public Airport FindWisconsinAirport(String id);
     ObservableCollection<Airport> FillDistances();
     double CalculateDistance(Airport start, Airport end);
     
     List<string> SelectAllWiAirportIds();
+
 }
