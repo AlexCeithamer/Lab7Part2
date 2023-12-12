@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Maui.Controls.Maps;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace Lab6_Starter.Model;
@@ -16,6 +17,8 @@ public interface IBusinessLogic
     ObservableCollection<NearbyAirport> CalculateAllAirportDist(String startAirportId, int distance);
     ObservableCollection<Airport> GetAirports();
     ObservableCollection<Resource> GetResources();
+    ObservableCollection<Pin> GetAirportPins();
+    ObservableCollection<Pin> GetVisitedAirportPins();
 
     // RoutingStrategies
     ObservableCollection<Airport> GetWisconsinAirports();
@@ -26,6 +29,9 @@ public interface IBusinessLogic
     int CalculateDistance(Airport start, Airport end);
 
     public Airport FindWisconsinAirport(String id);
-
+    ObservableCollection<Airport> FillDistances();
+    double CalculateDistance(Airport start, Airport end);
+    
+    List<string> SelectAllWiAirportIds();
 
 }

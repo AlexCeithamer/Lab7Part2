@@ -19,10 +19,11 @@ public partial class AirportsPage : ContentPage
 
     async void AddAirport_Clicked(System.Object sender, System.EventArgs e)
     {
-        var popup = new AddNewAirportPopup();
-
-        var result = await this.ShowPopupAsync(popup);
-        await DisplayAlert("Result", result.ToString(), "OK");
+        var result = await this.ShowPopupAsync(new AddNewAirportPopup());
+        if (result != null)
+        {
+            await DisplayAlert("Result", result.ToString(), "OK");
+        }
     }
 
     void DeleteAirport_Clicked(System.Object sender, System.EventArgs e)
@@ -35,23 +36,12 @@ public partial class AirportsPage : ContentPage
         }
     }
 
-    void EditAirport_Clicked(System.Object sender, System.EventArgs e)
+    async void EditAirport_Clicked(System.Object sender, System.EventArgs e)
     {
         Airport currentAirport = CV.SelectedItem as Airport;
-        DateTime dateVisited;
 
-        if (DateTime.TryParse(DateVisitedENT.Text, out dateVisited) == false)
-        {
-            DisplayAlert("Ruhroh", "Illegal date format", "OK");
-        }
-        else
-        {
-            AirportEditError result = MauiProgram.BusinessLogic.EditAirport(currentAirport.Id, CityENT.Text, DateTime.Parse(DateVisitedENT.Text), int.Parse(RatingENT.Text));
-            if (result != AirportEditError.NoError)
-            {
-                DisplayAlert("Ruhroh", result.ToString(), "OK");
-            }
-        }
+        await this.ShowPopupAsync(new EditAirportPopup());
+
     }
 
     void CalculateStatistics_Clicked(System.Object sender, System.EventArgs e)

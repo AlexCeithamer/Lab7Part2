@@ -2,7 +2,7 @@
                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
                x:Class="Lab6_Solution.AddNewAirportPopup" Color="Transparent">
-            <Frame CornerRadius="10" BackgroundColor="White">
+           <Frame CornerRadius="10" BackgroundColor="White">
                 <VerticalStackLayout
                     HeightRequest="450" WidthRequest="325">
 
@@ -11,18 +11,18 @@
                         <Button ImageSource="close.png" Clicked="ClosePopupButtonClicked" HeightRequest="25" WidthRequest="25" CornerRadius="50" HorizontalOptions="End"/> 
                     </FlexLayout>
 
-                    <Grid RowDefinitions="*, *, *, *, *, *, *, *">
+                    <Grid RowDefinitions="*, *, * ,* ,* ,*, *">
                         <Label Grid.Row="0" Text="Airport ID" FontSize="Medium" WidthRequest="300"/>
-                        <Entry Grid.Row="1" Text="MKE" Placeholder="Id" x:Name="IdENT" WidthRequest="300" Margin="10, 0, 0, 20"/>
+                        <Entry Grid.Row="1" Placeholder="Id" x:Name="IdENT" WidthRequest="300" Margin="10, 0, 0, 20"/>
 
                         <Label Grid.Row="2" Text="City" FontSize="Medium" WidthRequest="300"/>
-                        <Entry Grid.Row="3" Text="Milwaukee" Placeholder="City" x:Name="CityENT" WidthRequest="300" Margin="10, 0, 0, 20"/>
+                        <Entry Grid.Row="3" Placeholder="City" x:Name="CityENT" WidthRequest="300" Margin="10, 0, 0, 20"/>
 
                         <Label Grid.Row="4" Text="Date Visited" FontSize="Medium" WidthRequest="300"/>
-                        <Entry Grid.Row="5" Text="10/23/2023" Placeholder="Date Visited" x:Name="DateVisitedENT" WidthRequest="300" Margin="10, 0, 0, 20"/>
+                        <Entry Grid.Row="5" Placeholder="Date Visited" x:Name="DateVisitedENT" WidthRequest="300" Margin="10, 0, 0, 20"/>
 
                         <Label Grid.Row="6" Text="Rating" FontSize="Medium" WidthRequest="300"/>
-                        <Entry Grid.Row="7" Text="5" Placeholder="Rating" x:Name="RatingENT" WidthRequest="300" Margin="10, 0, 0, 20"/>
+                        <Entry Grid.Row="7" Placeholder="Rating" x:Name="RatingENT" WidthRequest="300" Margin="10, 0, 0, 20"/>
                     </Grid>
 
                     <Button Text="Add Airport" Clicked="AddAirportButtonClicked" WidthRequest="200"/>

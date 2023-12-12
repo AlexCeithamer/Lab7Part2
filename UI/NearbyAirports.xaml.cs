@@ -21,7 +21,7 @@ public partial class NearbyAirports : ContentPage
             return;
         }
 
-        if (!int.TryParse(distanceENT.Text, out int distance))
+        if (!int.TryParse(distanceENT.Text, out int distance) || distance < 0)
         {
             DisplayAlert("Ruhroh", "Invalid distance given.", "OK");
             return;

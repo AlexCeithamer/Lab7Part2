@@ -6,6 +6,7 @@ using System.Runtime.Intrinsics.Arm;
 using System.ComponentModel;
 using System.Linq;
 using Lab6_Starter;
+using Microsoft.Maui.Controls.Maps;
 
 namespace Lab6_Starter.Model;
 
@@ -40,6 +41,23 @@ public partial class BusinessLogic : IBusinessLogic, INotifyPropertyChanged
 
     }
 
+    /// <summary>
+    /// Gets all of the airport pins from the database
+    /// </summary>
+    /// <returns>an observable collection of airport pins</returns>
+    public ObservableCollection<Pin> AirportPins
+    {
+        get { return GetAirportPins(); }
+    }
+    /// <summary>
+    /// Displays Visited Airport Pins
+    /// </summary>
+    public ObservableCollection<Pin> VisitedAirportPins
+    {
+        get { return GetVisitedAirportPins(); }
+    }
+
+
     protected virtual void OnPropertyChanged(string propertyName)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -50,6 +68,7 @@ public partial class BusinessLogic : IBusinessLogic, INotifyPropertyChanged
     {
         return db.SelectAirport(id, UserId);
     }
+    
 /// <summary>
 /// Checks to make sure that all airport fields are legitimate
 /// </summary>
@@ -192,6 +211,34 @@ public partial class BusinessLogic : IBusinessLogic, INotifyPropertyChanged
     public ObservableCollection<Resource> GetResources()
     {
         return db.SelectAllResources();
+    }
+
+    /// <summary>
+    /// Get all airport pins for all airports in Wisconsin
+    /// </summary>
+    /// <returns>ObservableCollection<Pin></returns>
+    public ObservableCollection<Pin> GetAirportPins()
+    {
+        return db.GenerateAllAirportPins();
+    }
+    /// <summary>
+    /// Gets all visited airports and populates the pins.
+    /// </summary>
+    /// <returns>ObservableCollection<Pin></returns>
+    public ObservableCollection<Pin> GetVisitedAirportPins()
+    {
+        return db.GenerateAllVisitedAirportPins();
+    }
+    
+
+
+    /// <summary>
+    /// Call the DB layer to get the IDs of the Wisconsin airports; mostly for error checking.
+    /// </summary>
+    /// <returns> a list object containing all IATA-format Wisconsin airport identifiers </returns>
+    public List<string> SelectAllWiAirportIds()
+    {
+        return db.SelectAllWiAirportIds();
     }
 
 }

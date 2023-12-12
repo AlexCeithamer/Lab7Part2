@@ -1,6 +1,4 @@
 using Lab6_Starter.Model;
-using Microsoft.Maui.Controls.Maps;
-using Microsoft.Maui.Maps;
 
 namespace Lab6_Starter;
 public partial class Map : ContentPage
@@ -8,7 +6,8 @@ public partial class Map : ContentPage
 	public Map()
 	{
 		InitializeComponent();
-	}
+        PopulateMap();
+    }
 
 	/// <summary>
 	/// This is the event handler for the Logout button. All it does is bring us back to the Login page
@@ -18,6 +17,21 @@ public partial class Map : ContentPage
 	void Logout_Clicked(System.Object sender, System.EventArgs e)
 	{
 		//MauiProgram.BusinessLogic.Logout();
+		
 		Application.Current.MainPage = new LoginPage();
 	}
+	void PopulateMap()
+	{
+		var pinsToAdd = MauiProgram.BusinessLogic.GetAirportPins();
+		foreach (var pin in pinsToAdd)
+		{
+			map.Pins.Add(pin);
+		}
+		var visitedPinsToAdd = MauiProgram.BusinessLogic.GetVisitedAirportPins();
+        foreach (var pin in pinsToAdd)
+        {
+            map.Pins.Add(pin);
+        }
+    }
+	
 }

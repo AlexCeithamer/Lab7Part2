@@ -1,9 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:maps="clr-namespace:Microsoft.Maui.Controls.Maps;assembly=Microsoft.Maui.Controls.Maps"
     xmlns:sensors="clr-namespace:Microsoft.Maui.Devices.Sensors;assembly=Microsoft.Maui.Essentials"
     xmlns:local="clr-namespace:Lab6_Starter"
+    xmlns:model="clr-namespace:Lab6_Starter.Model"
     x:Class="Lab6_Starter.Map"
     Title="Map">
 
@@ -27,68 +28,6 @@
             </MapSpan>
         </x:Arguments>
 
-        <maps:Map.Pins>
-            <maps:Pin Label="KATW"
-                Address="W6390 Challenger Dr, Appleton, WI 54914"
-                Type="Place">
-                <maps:Pin.Location>
-                    <sensors:Location>
-                        <x:Arguments>
-                            <x:Double>44.258056</x:Double>
-                            <x:Double>-88.519167</x:Double>
-                        </x:Arguments>
-                    </sensors:Location>
-                </maps:Pin.Location>
-            </maps:Pin>
-            <maps:Pin Label="KEAU"
-                Address="3800 Starr Ave, Eau Claire, WI 54703"
-                Type="Place">
-                <maps:Pin.Location>
-                    <sensors:Location>
-                        <x:Arguments>
-                            <x:Double>44.865833</x:Double>
-                            <x:Double>-91.484167</x:Double>
-                        </x:Arguments>
-                    </sensors:Location>
-                </maps:Pin.Location>
-            </maps:Pin>
-            <maps:Pin Label="KGRB"
-                Address="2077 Airport Dr, Green Bay, WI 54313"
-                Type="Place">
-                <maps:Pin.Location>
-                    <sensors:Location>
-                        <x:Arguments>
-                            <x:Double>44.484722</x:Double>
-                            <x:Double>-88.129722</x:Double>
-                        </x:Arguments>
-                    </sensors:Location>
-                </maps:Pin.Location>
-            </maps:Pin>
-            <maps:Pin Label="KMSN"
-                Address="4000 International Ln, Madison, WI 53704"
-                Type="Place">
-                <maps:Pin.Location>
-                    <sensors:Location>
-                        <x:Arguments>
-                            <x:Double>43.135990</x:Double>
-                            <x:Double>-89.345802</x:Double>
-                        </x:Arguments>
-                    </sensors:Location>
-                </maps:Pin.Location>
-            </maps:Pin>
-            <maps:Pin Label="KMKE"
-                Address="5300 S Howell Ave, Milwaukee, WI 53207"
-                Type="Place">
-                <maps:Pin.Location>
-                    <sensors:Location>
-                        <x:Arguments>
-                            <x:Double>42.947777</x:Double>
-                            <x:Double>-87.901978</x:Double>
-                        </x:Arguments>
-                    </sensors:Location>
-                </maps:Pin.Location>
-            </maps:Pin>
-        </maps:Map.Pins>
 
     </maps:Map>
 </ContentPage>

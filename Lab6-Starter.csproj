@@ -80,7 +80,6 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Databases/" />
-	  <Folder Include="Model\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <BundleResource Include="Resources\Images\trash.png" />
